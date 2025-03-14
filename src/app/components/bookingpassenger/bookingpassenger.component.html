@@ -1,0 +1,31 @@
+<div class="container">
+    <h2>Booking Details</h2>
+    <p><strong>Train Name:</strong> {{ train?.trainName }} ({{ train?.trainNo }})</p>
+    <p><strong>Departure Time:</strong> {{ train?.trainTime }}</p>
+    <p><strong>Distance:</strong> {{ train?.distance }} km</p>
+  
+    <h3>Selected Quotas:</h3>
+    <ul>
+      <li *ngFor="let quota of selectedQuotas">Quota {{ quota }}</li>
+    </ul>
+  
+    <h3>Passenger Details</h3>
+    <label>Number of Passengers: 
+      <input type="number" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1">
+    </label>
+  
+    <div *ngFor="let passenger of passengers; let i = index">
+      <h4>Passenger {{ i + 1 }}</h4>
+      <label>Name: <input type="text" [(ngModel)]="passengers[i].name"></label>
+      <label>Age: <input type="number" [(ngModel)]="passengers[i].age"></label>
+      <label>Gender:
+        <select [(ngModel)]="passengers[i].gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </label>
+    </div>
+  
+    <button (click)="bookTickets()">Proceed to Payment</button>
+  </div>
+  

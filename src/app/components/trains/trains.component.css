@@ -1,0 +1,68 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .train-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+  }
+  
+  .train-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .train-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .train-time, .train-distance {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .quota-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .quota-box {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .quota-box input {
+    margin-right: 5px;
+  }
+  
+  .book-btn {
+    margin-top: 10px;
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .book-btn:hover {
+    background: #0056b3;
+  }
+  

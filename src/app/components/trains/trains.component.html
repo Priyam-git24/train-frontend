@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Available Trains</h2>
+
+  <div *ngFor="let train of trains" class="train-card">
+    <div class="train-header">
+      <div class="train-info">
+        <span class="train-name">{{ train.trainName }} ({{ train.trainNo }})</span>
+        <span class="train-time">Departure: {{ train.trainTime }}</span>
+        <span class="train-distance">Distance: {{ train.distance }} km</span>
+      </div>
+    </div>
+
+    <!-- Quotas and Seats in a Horizontal Line -->
+    <div class="quota-container">
+      <div *ngFor="let quota of [1,2,3,4,5,6,7,8,9,10,11,12]" class="quota-box">
+        <label>
+          <input type="checkbox" 
+                 [checked]="selectedSeats[train.trainNo][quota]"
+                 (change)="toggleSeat(train.trainNo, quota)">
+          <span class="quota-label">Quota {{ quota }} ({{ train.seatsArray[quota - 1] }} seats)</span>
+        </label>
+      </div>
+    </div>
+
+    <button class="book-btn" (click)="bookTickets(train)">Book Now</button>
+  </div>
+</div>
