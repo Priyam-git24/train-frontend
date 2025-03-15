@@ -1,41 +1,29 @@
 <div class="booking-container">
-  <h2>Book Tickets</h2>
+  <h2>Passenger Details</h2>
 
-  <!-- Train Details -->
-  <div *ngIf="train" class="train-details">
+  <div *ngIf="train">
     <p><strong>Train:</strong> {{ train.trainName }} ({{ train.trainNo }})</p>
-    <p><strong>Class Type:</strong> {{ classType }}</p>
-    <p><strong>Quota Type:</strong> {{ quotaType }}</p>
+    <p><strong>Class:</strong> {{ classType }}</p>
+    <p><strong>Quota:</strong> {{ quotaType }}</p>
+    <p><strong>Fare:</strong> ₹{{ fare }}</p>
   </div>
 
-  <!-- Passenger Details -->
-  <div class="passenger-section">
-    <h3>Passenger Details</h3>
+  <label>Number of Passengers:</label>
+  <input type="number" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1">
 
-    <label for="passengerCount">Number of Passengers:</label>
-    <input type="number" id="passengerCount" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1" />
-
-    <div *ngFor="let passenger of passengers; let i = index" class="passenger">
-      <h4>Passenger {{ i + 1 }}</h4>
-      <label>Name:</label>
-      <input type="text" [(ngModel)]="passenger.name" placeholder="Enter name" required />
-
-      <label>Age:</label>
-      <input type="number" [(ngModel)]="passenger.age" placeholder="Enter age" required />
-
-      <label>Gender:</label>
-      <select [(ngModel)]="passenger.gender">
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-        <option value="O">Other</option>
-      </select>
-    </div>
+  <div *ngFor="let passenger of passengers; let i = index">
+    <input type="text" placeholder="Name" [(ngModel)]="passenger.name">
+    <input type="number" placeholder="Age" [(ngModel)]="passenger.age">
+    <select [(ngModel)]="passenger.gender">
+      <option value="M">Male</option>
+      <option value="F">Female</option>
+    </select>
   </div>
 
-  <!-- Book Tickets Button -->
-  <button class="book-btn" (click)="bookTickets()">Book Tickets</button>
+  <button (click)="bookTickets()">Book Ticket</button>
 
-  <!-- API Response Popup -->
+  <button *ngIf="ticketNo" class="payment-btn" (click)="goToPayment()">Proceed to Payment</button>
+
   <div *ngIf="apiResponse" class="popup">
     <p>{{ apiResponse }}</p>
     <button (click)="closePopup()">Close</button>

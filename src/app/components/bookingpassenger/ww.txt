@@ -1,0 +1,146 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-booking-passenger',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './bookingpassenger.component.html',
+  styleUrls: ['./bookingpassenger.component.css']
+})
+export class BookingPassengerComponent implements OnInit {
+  train: any;
+  classType: string = 'General';
+  quotaType: string = 'General';
+  noOfPassengers: number = 1;
+  passengers: any[] = [];
+  ticketNo: string | null = null;
+  apiResponse: string | null = null;
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['trainData']) {
+        this.train = JSON.parse(params['trainData']);
+      }
+      if (params['classType']) {
+        this.classType = params['classType'];
+      }
+      if (params['quotaType']) {
+        this.quotaType = params['quotaType'];
+      }
+    });
+
+    this.updatePassengerCount(this.noOfPassengers);
+  }
+
+  updatePassengerCount(count: number) {
+    this.passengers = Array.from({ length: count }, () => ({ name: '', age: null, gender: 'M' }));
+  }
+
+  bookTickets() {
+    if (!this.train) {
+      this.apiResponse = "❌ No train data available.";
+      return;
+    }
+
+    const scheduleId = 1;
+    const passengersToBook = this.noOfPassengers;
+    const url = `http://localhost:5212/api/trainprocess/update-seat/${scheduleId}/${this.classType}/${this.quotaType}/-${passengersToBook}`;
+
+    console.log("📡 Sending API request to:", url);
+    console.log("🚆 Train Info:", this.train);
+    console.log("🎟️ Selected Quota:", this.quotaType);
+    console.log("🏷️ Selected Class:", this.classType);
+
+    this.http.put(url, {}).subscribe({
+      next: (response: any) => {
+        console.log("✅ API Success Response:", response);
+        this.ticketNo = response?.ticketNo || null;
+        this.apiResponse = this.ticketNo 
+          ? `✅ Booking Successful! Ticket No: ${this.ticketNo}`
+          : "⚠️ No API response received.";
+
+        // Navigate to payment page with booking details
+        this.router.navigate(['/payment'], {
+          queryParams: {
+            trainData: JSON.stringify(this.train),
+            classType: this.classType,
+            quotaType: this.quotaType,
+            noOfPassengers: this.noOfPassengers,
+            ticketNo: this.ticketNo
+          }
+        });
+      },
+      error: (error) => {
+        console.error("❌ API Error:", error);
+        this.apiResponse = `❌ Error: ${error.error?.message || 'API request failed.'}`;
+      }
+    });
+  }
+  goToPayment() {
+    this.router.navigate(['/payment'], {
+      queryParams: {
+        trainData: JSON.stringify(this.train),
+        classType: this.classType,
+        quotaType: this.quotaType,
+        noOfPassengers: this.noOfPassengers,
+        ticketNo: this.ticketNo
+      }
+    });
+  }
+  closePopup() {
+    this.apiResponse = null;
+    this.ticketNo = null;
+  }
+}
+<div class="booking-container">
+  <h2>Book Tickets</h2>
+
+  <!-- Train Details -->
+  <div *ngIf="train" class="train-details">
+    <p><strong>Train:</strong> {{ train.trainName }} ({{ train.trainNo }})</p>
+    <p><strong>Class Type:</strong> {{ classType }}</p>
+    <p><strong>Quota Type:</strong> {{ quotaType }}</p>
+  </div>
+
+  <!-- Passenger Details -->
+  <div class="passenger-section">
+    <h3>Passenger Details</h3>
+
+    <label for="passengerCount">Number of Passengers:</label>
+    <input type="number" id="passengerCount" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1" />
+
+    <div *ngFor="let passenger of passengers; let i = index" class="passenger">
+      <h4>Passenger {{ i + 1 }}</h4>
+      <label>Name:</label>
+      <input type="text" [(ngModel)]="passenger.name" placeholder="Enter name" required />
+
+      <label>Age:</label>
+      <input type="number" [(ngModel)]="passenger.age" placeholder="Enter age" required />
+
+      <label>Gender:</label>
+      <select [(ngModel)]="passenger.gender">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+        <option value="O">Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Book Tickets Button -->
+  <button class="book-btn" (click)="bookTickets()">Book Tickets</button>
+
+  <!-- Proceed to Payment Button (Shown Only After Booking is Successful) -->
+  <button *ngIf="ticketNo" class="payment-btn" (click)="goToPayment()">Proceed to Payment</button>
+
+  <!-- API Response Popup -->
+  <div *ngIf="apiResponse" class="popup">
+    <p>{{ apiResponse }}</p>
+    <button (click)="closePopup()">Close</button>
+  </div>
+</div>

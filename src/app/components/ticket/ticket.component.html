@@ -1,0 +1,19 @@
+<div *ngIf="bookingData">
+    <h2>🎟️ Ticket Details</h2>
+    <p><strong>Booking ID:</strong> {{ bookingData.bookingId }}</p>
+    <p><strong>Train Name:</strong> {{ bookingData.trainName }}</p>
+    <p><strong>Class:</strong> {{ bookingData.classname }}</p>
+    <p><strong>Quota:</strong> {{ bookingData.quotaname }}</p>
+    <p><strong>Fare:</strong> ₹{{ bookingData.fare }}</p>
+    <p><strong>No. of Passengers:</strong> {{ bookingData.noofpassengers }}</p>
+  
+    <h3>👤 Passenger Details</h3>
+    <ul>
+      <li *ngFor="let passenger of bookingData.passengers">
+        {{ passenger.passengername }} ({{ passenger.age }} years, {{ passenger.gender }})
+      </li>
+    </ul>
+  </div>
+  
+  <!-- ✅ Fix: Ensure no unexpected empty tags -->
+  

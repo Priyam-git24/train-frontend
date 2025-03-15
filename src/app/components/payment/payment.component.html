@@ -1,0 +1,14 @@
+<h2>💳 Payment</h2>
+<p><strong>Total Fare:</strong> ₹{{ fare }}</p>
+
+<!-- Dummy Card Form -->
+<label>Card Number:</label>
+<input type="text" required /><br />
+
+<label>Expiry Date:</label>
+<input type="text" required /><br />
+
+<label>CVV:</label>
+<input type="text" required /><br />
+
+<button (click)="makePayment()">Pay Now</button>
