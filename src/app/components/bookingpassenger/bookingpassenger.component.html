@@ -1,31 +1,43 @@
-<div class="container">
-    <h2>Booking Details</h2>
-    <p><strong>Train Name:</strong> {{ train?.trainName }} ({{ train?.trainNo }})</p>
-    <p><strong>Departure Time:</strong> {{ train?.trainTime }}</p>
-    <p><strong>Distance:</strong> {{ train?.distance }} km</p>
-  
-    <h3>Selected Quotas:</h3>
-    <ul>
-      <li *ngFor="let quota of selectedQuotas">Quota {{ quota }}</li>
-    </ul>
-  
-    <h3>Passenger Details</h3>
-    <label>Number of Passengers: 
-      <input type="number" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1">
-    </label>
-  
-    <div *ngFor="let passenger of passengers; let i = index">
-      <h4>Passenger {{ i + 1 }}</h4>
-      <label>Name: <input type="text" [(ngModel)]="passengers[i].name"></label>
-      <label>Age: <input type="number" [(ngModel)]="passengers[i].age"></label>
-      <label>Gender:
-        <select [(ngModel)]="passengers[i].gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </label>
-    </div>
-  
-    <button (click)="bookTickets()">Proceed to Payment</button>
+<div class="booking-container">
+  <h2>Book Tickets</h2>
+
+  <!-- Train Details -->
+  <div *ngIf="train" class="train-details">
+    <p><strong>Train:</strong> {{ train.trainName }} ({{ train.trainNo }})</p>
+    <p><strong>Class Type:</strong> {{ classType }}</p>
+    <p><strong>Quota Type:</strong> {{ quotaType }}</p>
   </div>
-  
+
+  <!-- Passenger Details -->
+  <div class="passenger-section">
+    <h3>Passenger Details</h3>
+
+    <label for="passengerCount">Number of Passengers:</label>
+    <input type="number" id="passengerCount" [(ngModel)]="noOfPassengers" (change)="updatePassengerCount(noOfPassengers)" min="1" />
+
+    <div *ngFor="let passenger of passengers; let i = index" class="passenger">
+      <h4>Passenger {{ i + 1 }}</h4>
+      <label>Name:</label>
+      <input type="text" [(ngModel)]="passenger.name" placeholder="Enter name" required />
+
+      <label>Age:</label>
+      <input type="number" [(ngModel)]="passenger.age" placeholder="Enter age" required />
+
+      <label>Gender:</label>
+      <select [(ngModel)]="passenger.gender">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+        <option value="O">Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Book Tickets Button -->
+  <button class="book-btn" (click)="bookTickets()">Book Tickets</button>
+
+  <!-- API Response Popup -->
+  <div *ngIf="apiResponse" class="popup">
+    <p>{{ apiResponse }}</p>
+    <button (click)="closePopup()">Close</button>
+  </div>
+</div>

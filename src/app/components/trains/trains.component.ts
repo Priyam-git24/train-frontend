@@ -1,25 +1,50 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 interface Train {
   trainNo: string;
   trainName: string;
   trainTime: string;
   distance: number;
-  seatsArray: number[];
+}
+
+interface Quota {
+  QuotaId: number;
+  QuotaType: string;
+  IsActive: number;
+}
+
+interface ClassType {
+  ClassId: number;
+  ClassType: string;
+  IsActive: number;
 }
 
 @Component({
   selector: 'app-trains',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './trains.component.html',
   styleUrls: ['./trains.component.css']
 })
 export class TrainsComponent implements OnInit {
   trains: Train[] = [];
-  selectedSeats: { [trainNo: string]: { [quota: number]: boolean } } = {};
+  quotaTypes: Quota[] = [
+    { QuotaId: 1, QuotaType: 'women', IsActive: 1 },
+    { QuotaId: 2, QuotaType: 'Senior citizen', IsActive: 1 },
+    { QuotaId: 3, QuotaType: 'General', IsActive: 1 }
+  ];
+  classTypes: ClassType[] = [
+    { ClassId: 1, ClassType: 'AC-2', IsActive: 1 },
+    { ClassId: 2, ClassType: 'AC-3', IsActive: 1 },
+    { ClassId: 3, ClassType: 'Sleeper', IsActive: 1 },
+    { ClassId: 4, ClassType: 'General', IsActive: 1 }
+  ];
+
+  selectedClass: { [trainNo: string]: string } = {};
+  selectedQuota: { [trainNo: string]: string } = {};
 
   constructor(private router: Router) {}
 
@@ -27,35 +52,27 @@ export class TrainsComponent implements OnInit {
     const storedTrains = localStorage.getItem('trains');
     this.trains = storedTrains ? JSON.parse(storedTrains) : [];
 
-    // Initialize seat selection state
     this.trains.forEach(train => {
-      if (!this.selectedSeats[train.trainNo]) {
-        this.selectedSeats[train.trainNo] = {};
-      }
+      this.selectedClass[train.trainNo] = 'General'; // Default selection
+      this.selectedQuota[train.trainNo] = 'General';
     });
   }
 
-  toggleSeat(trainNo: string, quota: number) {
-    if (!this.selectedSeats[trainNo]) {
-      this.selectedSeats[trainNo] = {};
-    }
-    this.selectedSeats[trainNo][quota] = !this.selectedSeats[trainNo][quota];
-  }
+  bookTickets(train: Train) {
+    const classType = this.selectedClass[train.trainNo];
+    const quotaType = this.selectedQuota[train.trainNo];
 
-  bookTickets(train: any) {
-    const selectedQuotas = Object.keys(this.selectedSeats[train.trainNo])
-      .filter(quota => this.selectedSeats[train.trainNo][parseInt(quota, 10)]);
-  
-    if (selectedQuotas.length === 0) {
-      alert('Please select at least one seat before proceeding.');
+    if (!classType || !quotaType) {
+      alert('Please select both class and quota before proceeding.');
       return;
     }
-  
+
     this.router.navigate(['/booking-passenger'], {
       queryParams: {
         trainData: JSON.stringify(train),
-        selectedQuotas: JSON.stringify(selectedQuotas)
+        classType: classType,
+        quotaType: quotaType
       }
     });
   }
-}  
+}

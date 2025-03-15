@@ -10,17 +10,21 @@
       </div>
     </div>
 
-    <!-- Quotas and Seats in a Horizontal Line -->
-    <div class="quota-container">
-      <div *ngFor="let quota of [1,2,3,4,5,6,7,8,9,10,11,12]" class="quota-box">
-        <label>
-          <input type="checkbox" 
-                 [checked]="selectedSeats[train.trainNo][quota]"
-                 (change)="toggleSeat(train.trainNo, quota)">
-          <span class="quota-label">Quota {{ quota }} ({{ train.seatsArray[quota - 1] }} seats)</span>
-        </label>
-      </div>
-    </div>
+    <!-- Class Type Dropdown -->
+    <label for="classSelect">Class Type:</label>
+    <select [(ngModel)]="selectedClass[train.trainNo]">
+      <option *ngFor="let classItem of classTypes" [value]="classItem.ClassType">
+        {{ classItem.ClassType }}
+      </option>
+    </select>
+
+    <!-- Quota Type Dropdown -->
+    <label for="quotaSelect">Quota Type:</label>
+    <select [(ngModel)]="selectedQuota[train.trainNo]">
+      <option *ngFor="let quotaItem of quotaTypes" [value]="quotaItem.QuotaType">
+        {{ quotaItem.QuotaType }}
+      </option>
+    </select>
 
     <button class="book-btn" (click)="bookTickets(train)">Book Now</button>
   </div>
