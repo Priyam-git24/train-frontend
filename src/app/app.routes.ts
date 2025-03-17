@@ -5,7 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 import { BookingPassengerComponent } from './components/bookingpassenger/bookingpassenger.component';
 import { Routes } from '@angular/router';
 import { PaymentComponent } from './components/payment/payment.component';
-import { TrainAddComponent } from './components/admin/trainadd/trainadd.component';
+import { TrainaddComponent } from './components/admin/trainadd/trainadd.component';
+import { AddtraindetailsComponent } from './components/admin/addtraindetails/addtraindetails.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'trains', component: TrainsComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'payment', component: PaymentComponent },
   { path: 'ticket', component: TicketComponent },
   { path: 'ticket-details', component: TicketDetailsComponent },
-  { path: 'admin/add-train', component: TrainAddComponent }, 
+  { path: 'admin/add-train', component: TrainaddComponent }, 
+  { path: 'admin/add-train-details', component: AddtraindetailsComponent },
 ];

@@ -3,28 +3,33 @@
     <form [formGroup]="trainForm" (ngSubmit)="addTrain()">
       <label>Train No:</label>
       <input type="text" formControlName="trainNo" required />
-  
+      
       <label>Train Name:</label>
       <input type="text" formControlName="trainName" required />
-  
-      <label>Source:</label>
-      <input type="text" formControlName="source" required />
-  
-      <label>Destination:</label>
-      <input type="text" formControlName="destination" required />
-  
-      <label>Departure Time:</label>
-      <input type="time" formControlName="departureTime" required />
-  
-      <label>Arrival Time:</label>
-      <input type="time" formControlName="arrivalTime" required />
-  
-      <label>Total Seats:</label>
-      <input type="number" formControlName="totalSeats" required />
   
       <button type="submit" [disabled]="trainForm.invalid">Add Train</button>
     </form>
   
-    <p *ngIf="message">{{ message }}</p>
+    <hr />
+  
+    <h2>Add Route</h2>
+    <form [formGroup]="routeForm" (ngSubmit)="addRoute()">
+      <label>Source Station:</label>
+      <input type="text" formControlName="sourceStation" required />
+  
+      <label>Destination Station:</label>
+      <input type="text" formControlName="destinationStation" required />
+  
+      <label>Distance (km):</label>
+      <input type="number" formControlName="distance" required />
+  
+      <label>Is Active:</label>
+      <select formControlName="isActive">
+        <option [value]="true">Yes</option>
+        <option [value]="false">No</option>
+      </select>
+  
+      <button type="submit" [disabled]="routeForm.invalid">Add Route</button>
+    </form>
   </div>
   
