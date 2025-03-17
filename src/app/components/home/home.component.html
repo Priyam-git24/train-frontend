@@ -1,16 +1,21 @@
 <div class="container">
-    <h2>Search Trains</h2>
-    <form (submit)="onSubmit()">
-      <label for="source">Source:</label>
-      <input type="text" id="source" [(ngModel)]="source" name="source" required />
-  
-      <label for="destination">Destination:</label>
-      <input type="text" id="destination" [(ngModel)]="destination" name="destination" required />
-  
-      <label for="date">Date:</label>
-      <input type="date" id="date" [(ngModel)]="date" name="date" required />
-  
-      <button type="submit">Search</button>
-    </form>
+  <h2>Search Trains</h2>
+  <form (submit)="onSubmit()">
+    <label for="source">Source:</label>
+    <input type="text" id="source" [(ngModel)]="source" name="source" required />
+
+    <label for="destination">Destination:</label>
+    <input type="text" id="destination" [(ngModel)]="destination" name="destination" required />
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" [(ngModel)]="date" name="date" required />
+
+    <button type="submit">Search</button>
+  </form>
+
+  <h2>Search by PNR</h2>
+  <div class="pnr-search">
+    <input type="text" [(ngModel)]="pnr" placeholder="Enter PNR number" />
+    <button (click)="searchByPNR()">Search Ticket</button>
   </div>
-  
+</div>

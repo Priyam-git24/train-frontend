@@ -1,0 +1,13 @@
+<div *ngIf="ticket">
+    <h2>Ticket Details</h2>
+    <p><strong>PNR:</strong> {{ ticket.pnr }}</p>
+    <p><strong>Booking Date:</strong> {{ ticket.bookingDate }}</p>
+    <p><strong>Journey Date:</strong> {{ ticket.journeyDate }}</p>
+    <p><strong>Time:</strong> {{ ticket.journeyTime }}</p>
+    <p><strong>Coach:</strong> {{ ticket.coach }}</p>
+    <p><strong>Seat No:</strong> {{ ticket.seatNo }}</p>
+    <p><strong>Status:</strong> {{ ticket.isActive ? 'Active' : 'Cancelled' }}</p>
+  
+    <button (click)="cancelTicket()">Cancel Ticket</button>
+  </div>
+  

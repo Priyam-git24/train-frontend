@@ -10,17 +10,20 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
-  bookingData: any;
+  ticketData: any;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['bookingData']) {
-        this.bookingData = JSON.parse(params['bookingData']);
+        this.ticketData = JSON.parse(params['bookingData']);
+        console.log("📢 Full API Response:", this.ticketData);
+
+        if (!this.ticketData.passengers || this.ticketData.passengers.length === 0) {
+          console.warn("⚠️ No passengers received in API response!");
+        }
       }
     });
-
-    console.log("📢 Ticket Data:", this.bookingData);
   }
 }
